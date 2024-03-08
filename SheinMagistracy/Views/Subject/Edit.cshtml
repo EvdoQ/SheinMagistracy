@@ -1,0 +1,31 @@
+﻿@model Subject
+@{
+    ViewData["Title"] = "Окно обновление";
+}
+
+<div class="container">
+    <div class="form-group row">
+        <h2 class="text-info pl-3">Обновление предмета</h2>
+    </div>
+
+    <form method="post">
+        <div class="form-group">
+            <label asp-for="SubjectName"></label>
+            <input asp-for="SubjectName" class="form-control" />
+            <span asp-validation-for="SubjectName" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Teacher"></label>
+            <input asp-for="Teacher" class="form-control" />
+            <span asp-validation-for="Teacher" class="text-danger"></span>
+        </div>
+        <button type="submit" class="btn btn-primary" value="Edit">Обновить</button>
+        <a asp-action="Index" class="btn btn-success">Вернуться</a>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace SheinMagistracy.Models
 {
@@ -6,7 +7,11 @@ namespace SheinMagistracy.Models
     {
         [Key]
         public int Id { get; set; }
+        [DisplayName("Предмет")]
+        [Required]
         public string SubjectName { get; set; }
+        [DisplayName("Преподаватель")]
+        [Required]
         public string Teacher { get; set; }
     }
 }
