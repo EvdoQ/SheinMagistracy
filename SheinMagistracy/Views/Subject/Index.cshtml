@@ -1,0 +1,42 @@
+﻿@model IEnumerable<Subject>
+
+@{
+    ViewData["Title"] = "База предметов";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Предметотека</h1>
+    <p>Список предметов</p>
+</div>
+
+<div class="container">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Предмет</th>
+                <th>Преподаватель</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.SubjectName</td>
+                    <td>@item.Teacher</td>
+                    <td>
+                        <a asp-controller="Subject" asp-route-Id="@item.Id" asp-action="Edit" class="btn btn-primary">
+                            Обновить
+                        </a>
+                        <a asp-controller="Subject" asp-route-Id="@item.Id" asp-action="Delete" class="btn btn-dark">
+                            Удалить
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <a asp-controller="Book" asp-action="Create" class="btn btn-primary">
+        Добавить предмет
+    </a>
+</div>
+

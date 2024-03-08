@@ -10,6 +10,6 @@ namespace SheinMagistracy.Data
             
         }
 
-        DbSet<Subject> Subject {  get; set; }
+        public DbSet<Subject> Subject {  get; set; }
     }
 }
