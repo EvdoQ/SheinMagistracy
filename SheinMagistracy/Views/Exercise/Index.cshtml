@@ -1,0 +1,46 @@
+﻿@model IEnumerable<Exercise>
+
+@{
+    ViewData["Title"] = "База задач";
+}
+
+<div class="text-center">
+    <h1 class="display-4">База задач</h1>
+    <p>Список задач</p>
+</div>
+
+<div class="container">
+    <div class="text-right">
+        <a asp-controller="Subject" asp-action="Create" class="btn btn-primary">
+            Добавить задачу
+        </a>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Задача</th>
+                <th>Предмет</th>
+                <th>Дедлайн</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Name</td>
+                    <td>@item.Subject.SubjectName</td>
+                    <td>@item.Deadline</td>
+                    <td>
+                        <a asp-controller="Exercise" asp-route-Id="@item.Id" asp-action="Edit" class="btn btn-primary">
+                            Обновить
+                        </a>
+                        <a asp-controller="Exercise" asp-route-Id="@item.Id" asp-action="Delete" class="btn btn-dark">
+                            Удалить
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+

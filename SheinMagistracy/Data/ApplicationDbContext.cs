@@ -11,5 +11,6 @@ namespace SheinMagistracy.Data
         }
 
         public DbSet<Subject> Subject {  get; set; }
+        public DbSet<Exercise> Exercise { get; set; }
     }
 }
