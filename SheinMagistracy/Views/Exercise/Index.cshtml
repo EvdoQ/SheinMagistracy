@@ -11,36 +11,43 @@
 
 <div class="container">
     <div class="text-right">
-        <a asp-controller="Subject" asp-action="Create" class="btn btn-primary">
+        <a asp-action="Upsert" class="btn btn-primary">
             Добавить задачу
         </a>
     </div>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Задача</th>
-                <th>Предмет</th>
-                <th>Дедлайн</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
+    @if (Model.Count() > 0)
+    {
+        <table class="table">
+            <thead>
                 <tr>
-                    <td>@item.Name</td>
-                    <td>@item.Subject.SubjectName</td>
-                    <td>@item.Deadline</td>
-                    <td>
-                        <a asp-controller="Exercise" asp-route-Id="@item.Id" asp-action="Edit" class="btn btn-primary">
-                            Обновить
-                        </a>
-                        <a asp-controller="Exercise" asp-route-Id="@item.Id" asp-action="Delete" class="btn btn-dark">
-                            Удалить
-                        </a>
-                    </td>
+                    <th>Задача</th>
+                    <th>Предмет</th>
+                    <th>Дедлайн</th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Name</td>
+                        <td>@item.Subject.SubjectName</td>
+                        <td>@item.Deadline</td>
+                        <td>
+                            <a asp-route-Id="@item.Id" asp-action="Upsert" class="btn btn-primary">
+                                Обновить
+                            </a>
+                            <a asp-route-Id="@item.Id" asp-action="Delete" class="btn btn-dark">
+                                Удалить
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p> Список задач пуст. </p>
+    }
 </div>
 
