@@ -32,7 +32,7 @@ namespace SheinMagistracy.Controllers
                 obj.Subject = _db.Subject.FirstOrDefault(u => u.Id == obj.SubjectId);
             }
 
-            return View(exerciseList);
+            return View(exerciseList.OrderBy(x => x.Deadline));
         }
 
         // GET
@@ -99,15 +99,20 @@ namespace SheinMagistracy.Controllers
                 {
                     //обновление
                     var exerciseFromDb = _db.Exercise.AsNoTracking().FirstOrDefault(u => u.Id ==  exerciseVM.Exercise.Id);
-                    if (files.Count > 0 && exerciseFromDb.Image != null)
+                    if (files.Count > 0)
                     {
                         string upload = webRootPath + WC.ImagePath;
                         string fileName = Guid.NewGuid().ToString();
                         string extension = Path.GetExtension(files[0].FileName);
-                        var oldFile = Path.Combine(upload, exerciseFromDb.Image);
-                        if (System.IO.File.Exists(oldFile))
+                        var oldFile = "";
+                        if (exerciseFromDb.Image != null)
                         {
-                            System.IO.File.Delete(oldFile);
+                            oldFile = Path.Combine(upload, exerciseFromDb.Image);
+
+                            if (System.IO.File.Exists(oldFile))
+                            {
+                                System.IO.File.Delete(oldFile);
+                            }
                         }
                         using (var fileStream = new FileStream(Path.Combine(upload, fileName + extension), FileMode.Create))
                         {

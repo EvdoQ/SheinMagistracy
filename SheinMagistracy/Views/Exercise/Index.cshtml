@@ -9,7 +9,7 @@
     <p>Список задач</p>
 </div>
 
-<div class="container">
+<div class="container" width="100%">
     <div class="text-right">
         <a asp-action="Upsert" class="btn btn-primary">
             Добавить задачу
@@ -31,10 +31,10 @@
                     <tr>
                         <td>@item.Name</td>
                         <td>@item.Subject.SubjectName</td>
-                        <td>@item.Deadline</td>
+                        <td>@item.Deadline.ToString("dd.MM")</td>
                         <td>
                             <a asp-route-Id="@item.Id" asp-action="Upsert" class="btn btn-primary">
-                                Обновить
+                                Подробнее
                             </a>
                             <a asp-route-Id="@item.Id" asp-action="Delete" class="btn btn-dark">
                                 Удалить

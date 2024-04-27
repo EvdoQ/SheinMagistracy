@@ -1,8 +1,74 @@
-﻿@{
+﻿@using System.Globalization
+@model SheinMagistracy.Models.Exercise
+
+@{
     ViewData["Title"] = "Home Page";
+    DateTime myDateTime = DateTime.Now;
+    int firstDayOfYear = (int)new DateTime(myDateTime.Year, 1, 1).DayOfWeek;
+    int weekNumber = (myDateTime.DayOfYear + firstDayOfYear) / 7;
+    string week = weekNumber % 2 == 0 ? "Верхняя" : "Нижняя";
 }
 
 <div class="text-center">
     <h1 class="display-4">Привет!</h1>
-    <p>Домашняя страница</a>.</p>
+    <h4>Неделя сейчас - @week</h4>
+
+    <table class="table" width="100%">
+        <thead>
+            <tr>
+                <th>Предмет</th>
+                <th>Пометка</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if(week == "Верхняя")
+            {
+                <tr>
+                    <td>Понедельник - МСРПО</td>
+                    <td>С 16:20, B-315</td>
+                </tr>
+                <tr>
+                    <td>Вторник - УЧР</td>
+                    <td>С 16:20, B-315</td>
+                </tr>
+                <tr>
+                    <td>Четверг - АА</td>
+                    <td>С 16:20</td>
+                </tr>
+                <tr>
+                    <td>Пятница - ОСиО</td>
+                    <td>Больше нет</td>
+                </tr>
+            }
+            else
+            {
+                <tr>
+                    <td>Понедельник - МКПО</td>
+                    <td>С 16:20, B-311</td>
+                </tr>
+                <tr>
+                    <td>Вторник - УП</td>
+                    <td>Пока не проводится</td>
+                </tr>
+                <tr>
+                    <td>Четверг - ПАД</td>
+                    <td>С 16:20</td>
+                </tr>
+                <tr>
+                    <td>Пятница - ОСиО</td>
+                    <td>Больше нет</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <h4>Ближайшее задание (на @CultureInfo.GetCultureInfo("ru-RU").DateTimeFormat.GetDayName(Model.Deadline.DayOfWeek))</h4>
+    <div class="card mb-3">
+        <img src="@WC.ImagePath@Model.Image" class="card-img-top mx-auto" style="max-width: 40%;" alt="default-image" onerror="this.onerror = null; this.src = '/images/work.png'">
+        <div class="card-body">
+            <h5 class="card-title">@Model.Subject.SubjectName</h5>
+            <p class="card-text">@Model.Name</p>
+            <p class="card-text"><small class="text-muted">Short desc -todo</small></p>
+        </div>
+    </div>
 </div>
