@@ -12,11 +12,16 @@
 <div class="container">
     @if (Model.Count() > 0)
     {
-        <table class="table">
+        <table class="table table-striped  content-table  table-bordered table-my">
             <thead>
                 <tr>
                     <th>Предмет</th>
                     <th>Преподаватель</th>
+                    <th>
+                        <a asp-controller="Subject" asp-action="Create" class="btn btn-primary">
+                            <i class="fa-solid fa-plus"></i>
+                        </a>
+                    </th>
                 </tr>
             </thead>
             <tbody>
@@ -27,10 +32,10 @@
                         <td>@item.Teacher</td>
                         <td>
                             <a asp-controller="Subject" asp-route-Id="@item.Id" asp-action="Edit" class="btn btn-primary">
-                                Обновить
+                                <i class="fa-solid fa-pen-to-square"></i>
                             </a>
                             <a asp-controller="Subject" asp-route-Id="@item.Id" asp-action="Delete" class="btn btn-dark">
-                                Удалить
+                                <i class="fa-solid fa-trash"></i>
                             </a>
                         </td>
                     </tr>
@@ -42,9 +47,5 @@
     {
         <p> Список предметов пуст. </p>
     }
-    <a asp-controller="Subject" asp-action="Create" class="btn btn-primary">
-            Добавить предмет
-        </a>
-    
 </div>
 

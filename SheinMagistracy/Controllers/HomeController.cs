@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using SheinMagistracy.Data;
@@ -24,6 +25,12 @@ namespace SheinMagistracy.Controllers
         }
 
         public IActionResult Index()
+        {
+            Exercise exercise = _db.Exercise.Include(u => u.Subject).OrderBy(u => u.Deadline).FirstOrDefault();
+            return View(exercise);
+        }
+
+        public IActionResult Details()
         {
             Exercise exercise = _db.Exercise.Include(u => u.Subject).OrderBy(u => u.Deadline).FirstOrDefault();
             return View(exercise);

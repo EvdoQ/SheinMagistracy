@@ -4,14 +4,15 @@
 @{
     ViewData["Title"] = "Home Page";
     DateTime myDateTime = DateTime.Now;
-    int firstDayOfYear = (int)new DateTime(myDateTime.Year, 1, 1).DayOfWeek;
-    int weekNumber = (myDateTime.DayOfYear + firstDayOfYear) / 7;
+    DateTime firstDayOfStudy = new DateTime(2024, 2, 12);
+    int weekNumber = (myDateTime.DayOfYear - firstDayOfStudy.AddDays(-1).DayOfYear) / 7;
     string week = weekNumber % 2 == 0 ? "Верхняя" : "Нижняя";
+    var currentWeek = firstDayOfStudy.AddDays(weekNumber * 7);
 }
 
 <div class="text-center">
     <h1 class="display-4">Привет!</h1>
-    <h4>Неделя сейчас - @week</h4>
+    <h4>Неделя @currentWeek.ToString("dd.MM") - @currentWeek.AddDays(6).ToString("dd.MM")  @week</h4>
 
     <table class="table" width="100%">
         <thead>
@@ -64,11 +65,11 @@
 
     <h4>Ближайшее задание (на @CultureInfo.GetCultureInfo("ru-RU").DateTimeFormat.GetDayName(Model.Deadline.DayOfWeek))</h4>
     <div class="card mb-3">
-        <img src="@WC.ImagePath@Model.Image" class="card-img-top mx-auto" style="max-width: 40%;" alt="default-image" onerror="this.onerror = null; this.src = '/images/work.png'">
+        <img src="@WC.ImagePath@Model.Image" class="card-img-top mx-auto" style="max-width: 50%;" alt="default-image" onerror="this.onerror = null; this.src = '/images/work.png'">
         <div class="card-body">
             <h5 class="card-title">@Model.Subject.SubjectName</h5>
             <p class="card-text">@Model.Name</p>
-            <p class="card-text"><small class="text-muted">Short desc -todo</small></p>
+            <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-primary">Подробнее</a>
         </div>
     </div>
 </div>
