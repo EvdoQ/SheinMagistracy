@@ -27,7 +27,7 @@ namespace SheinMagistracy.Controllers
         {
             IEnumerable<Exercise> exerciseList = _db.Exercise;
 
-            foreach(var obj in  exerciseList)
+            foreach (var obj in exerciseList)
             {
                 obj.Subject = _db.Subject.FirstOrDefault(u => u.Id == obj.SubjectId);
             }
@@ -42,7 +42,7 @@ namespace SheinMagistracy.Controllers
             {
                 Exercise = new Exercise(),
                 SubjectSelectList = _db.Subject.Select(i => new SelectListItem
-                { 
+                {
                     Text = i.SubjectName,
                     Value = i.Id.ToString()
                 })
@@ -57,7 +57,7 @@ namespace SheinMagistracy.Controllers
             {
                 //обновление
                 exerciseVM.Exercise = _db.Exercise.Find(id);
-                if(exerciseVM.Exercise == null)
+                if (exerciseVM.Exercise == null)
                 {
                     return NotFound();
                 }
@@ -70,11 +70,11 @@ namespace SheinMagistracy.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Upsert(ExerciseVM exerciseVM)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 var files = HttpContext.Request.Form.Files;
                 string webRootPath = _webHostEnvironment.WebRootPath;
-                if(exerciseVM.Exercise.Id == 0)
+                if (exerciseVM.Exercise.Id == 0)
                 {
                     //добавление
                     if (files.Count != 0)
@@ -98,7 +98,7 @@ namespace SheinMagistracy.Controllers
                 else
                 {
                     //обновление
-                    var exerciseFromDb = _db.Exercise.AsNoTracking().FirstOrDefault(u => u.Id ==  exerciseVM.Exercise.Id);
+                    var exerciseFromDb = _db.Exercise.AsNoTracking().FirstOrDefault(u => u.Id == exerciseVM.Exercise.Id);
                     if (files.Count > 0)
                     {
                         string upload = webRootPath + WC.ImagePath;
@@ -139,6 +139,18 @@ namespace SheinMagistracy.Controllers
             return View(exerciseVM);
         }
 
+        public IActionResult Details(int? id)
+        {
+            if (id == null || id == 0)
+                return NotFound();
+
+            var subject = _db.Exercise.Include(u => u.Subject).FirstOrDefault(u => u.Id == id);
+            if (subject == null)
+                return NotFound();
+
+            return View(subject);
+        }
+
         public IActionResult Delete(int? id)
         {
             if (id == null || id == 0)
@@ -170,5 +182,5 @@ namespace SheinMagistracy.Controllers
             _db.SaveChanges();
             return RedirectToAction("Index");
         }
-    } 
+    }
 }

@@ -10,11 +10,6 @@
 </div>
 
 <div class="container">
-   @*  <div class="text-right">
-        <a asp-action="Upsert" class="btn btn-primary">
-            Добавить задачу
-        </a>
-    </div> *@
     @if (Model.Count() > 0)
     {
        <div class="row">
@@ -39,11 +34,14 @@
                         <td>@item.Subject.SubjectName.Split(']')[0].Trim('[')</td>
                         <td>@item.Deadline.ToString("dd.MM")</td>
                         <td>
+                            <a asp-route-Id="@item.Id" asp-action="Details" class="btn btn-success">
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </a>
                             <a asp-route-Id="@item.Id" asp-action="Upsert" class="btn btn-primary">
                                 <i class="fa-solid fa-pen-to-square"></i>
                             </a>
                             <a asp-route-Id="@item.Id" asp-action="Delete" class="btn btn-dark">
-                                    <i class="fa-solid fa-trash"></i>
+                                <i class="fa-solid fa-trash"></i>
                             </a>
                         </td>
                     </tr>
@@ -54,6 +52,11 @@
     }
     else
     {
+        <div class="text-right">
+            <a asp-action="Upsert" class="btn btn-primary">
+                Добавить задачу
+            </a>
+        </div>
         <p> Список задач пуст. </p>
     }
 </div>

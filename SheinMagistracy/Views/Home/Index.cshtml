@@ -3,16 +3,34 @@
 
 @{
     ViewData["Title"] = "Home Page";
-    DateTime myDateTime = DateTime.Now;
-    DateTime firstDayOfStudy = new DateTime(2024, 2, 12);
-    int weekNumber = (myDateTime.DayOfYear - firstDayOfStudy.AddDays(-1).DayOfYear) / 7;
-    string week = weekNumber % 2 == 0 ? "Верхняя" : "Нижняя";
-    var currentWeek = firstDayOfStudy.AddDays(weekNumber * 7);
+    var firstMonday = Enumerable.Range(1, 7)
+        .Select(d => new DateTime(DateTime.Now.Year, 1, d))
+        .First(d => d.DayOfWeek == DayOfWeek.Monday);
+    int weeksCount = (DateTime.Now.DayOfYear - firstMonday.AddDays(-1).DayOfYear) / 7;
+    string weekType = weeksCount % 2 == 0 ? "Верхняя" : "Нижняя";
+    var currentWeek = firstMonday.AddDays(weeksCount * 7);
+    var schedule = new Dictionary<string, List<(string, string)>>()
+    {
+        ["Верхняя"] = new List<(string, string)>()
+        {
+            ("Понедельник - МСРПО", "С 16:20, B-315"),
+            ("Вторник - УЧР", "С 16:20, B-315"),
+            ("Четверг - АА", "С 16:20, B-104"),
+            ("Пятница - ОСиО", "C 18:00, B-302a"),
+        },
+        ["Нижняя"] = new List<(string, string)>()
+        {
+            ("Понедельник - МКПО", "С 16:20, B-311"),
+            ("Вторник - УП", "С 18:00, B-315"),
+            ("Четверг - ПАД", "С 16:20, B-315"),
+            ("Пятница - ОСиО", "C 18:00, B-302a"),
+        }
+    };
 }
 
 <div class="text-center">
     <h1 class="display-4">Привет!</h1>
-    <h4>Неделя @currentWeek.ToString("dd.MM") - @currentWeek.AddDays(6).ToString("dd.MM")  @week</h4>
+    <h4>Неделя @currentWeek.ToString("dd.MM") - @currentWeek.AddDays(6).ToString("dd.MM")  @weekType</h4>
 
     <table class="table" width="100%">
         <thead>
@@ -22,54 +40,30 @@
             </tr>
         </thead>
         <tbody>
-            @if(week == "Верхняя")
+            @foreach (var (subject, note) in schedule[weekType])
             {
                 <tr>
-                    <td>Понедельник - МСРПО</td>
-                    <td>С 16:20, B-315</td>
-                </tr>
-                <tr>
-                    <td>Вторник - УЧР</td>
-                    <td>С 16:20, B-315</td>
-                </tr>
-                <tr>
-                    <td>Четверг - АА</td>
-                    <td>С 16:20</td>
-                </tr>
-                <tr>
-                    <td>Пятница - ОСиО</td>
-                    <td>Больше нет</td>
-                </tr>
-            }
-            else
-            {
-                <tr>
-                    <td>Понедельник - МКПО</td>
-                    <td>С 16:20, B-311</td>
-                </tr>
-                <tr>
-                    <td>Вторник - УП</td>
-                    <td>Пока не проводится</td>
-                </tr>
-                <tr>
-                    <td>Четверг - ПАД</td>
-                    <td>С 16:20</td>
-                </tr>
-                <tr>
-                    <td>Пятница - ОСиО</td>
-                    <td>Больше нет</td>
+                    <td>@subject</td>
+                    <td>@note</td>
                 </tr>
             }
         </tbody>
     </table>
 
-    <h4>Ближайшее задание (на @CultureInfo.GetCultureInfo("ru-RU").DateTimeFormat.GetDayName(Model.Deadline.DayOfWeek))</h4>
-    <div class="card mb-3">
-        <img src="@WC.ImagePath@Model.Image" class="card-img-top mx-auto" style="max-width: 50%;" alt="default-image" onerror="this.onerror = null; this.src = '/images/work.png'">
-        <div class="card-body">
-            <h5 class="card-title">@Model.Subject.SubjectName</h5>
-            <p class="card-text">@Model.Name</p>
-            <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-primary">Подробнее</a>
+    @if (Model != null)
+    {
+        <h4>Ближайшее задание (@CultureInfo.GetCultureInfo("ru-RU").DateTimeFormat.GetDayName(Model.Deadline.DayOfWeek))</h4>
+        <div class="card mb-3">
+            <img src="@WC.ImagePath@Model.Image" class="card-img-top mx-auto" style="max-width: 50%;" alt="default-image" onerror="this.onerror = null; this.src = '/images/work.png'">
+            <div class="card-body">
+                <h5 class="card-title">@Model.Subject.SubjectName</h5>
+                <p class="card-text">@Model.Name</p>
+                <a asp-controller="Exercise" asp-action="Details" asp-route-id="@Model.Id" class="btn btn-primary">Подробнее</a>
+            </div>
         </div>
-    </div>
+    }
+    else
+    {
+        <p> Список ближайших задач пуст. </p>
+    }
 </div>
